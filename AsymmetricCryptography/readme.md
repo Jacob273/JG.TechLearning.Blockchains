@@ -1,0 +1,1 @@
+![Asymmetric encryption & decryption](./asymmetric.drawio.svg)
