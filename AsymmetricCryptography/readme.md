@@ -3,4 +3,4 @@
 
 ----------------------------------------------------------------
 # Signing
-![Asymmetric - signing](./asymetric-signing.drawio)
+![Asymmetric - signing](./asymmetric-signing.drawio)
