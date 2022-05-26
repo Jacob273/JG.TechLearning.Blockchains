@@ -10,15 +10,39 @@ namespace Symmetric.Client
     {
         static async Task Main(string[] args)
         {
-            Console.WriteLine("Press Enter to make API CALL to retrieve message encrypted with public key.");
+            Console.WriteLine("1# Press Enter to make API CALL to retrieve message encrypted with public key.");
             Console.ReadLine();
 
             string encryptedTextBase64 = await GetEncryptedMessageFromAPI();
-
             DecryptMessage(encryptedTextBase64);
+
+            Console.WriteLine("2# Press Enter to make API CALL to retrieve signed message.");
+
+            SignedMessage signedMessage = await GetSignedMessageAsync();
+            VerifyMessage(signedMessage);
 
             Console.WriteLine("Press any key to close application.");
             Console.ReadLine();
+        }
+
+        private static void VerifyMessage(SignedMessage signedMessage)
+        {
+            Console.WriteLine("Verifying signed message.");
+
+            RSAVerifier verifier = new();
+            verifier.InitializePublicKey();
+
+            var messageVerificationResult = verifier.Verify(signedMessage.Message, signedMessage.SignatureBase64);
+            Console.WriteLine($"Message, is from a trustful source: [{messageVerificationResult}]");
+        }
+
+        private static async Task<SignedMessage> GetSignedMessageAsync()
+        {
+            PublicKeyEncryptionAPI api = RestClient.For<PublicKeyEncryptionAPI>("http://localhost:6300");
+            var signedMessage = await api.GetSignedMessageAsync();
+            Console.WriteLine($"message text: {signedMessage.Message}");
+            Console.WriteLine($"signature: {signedMessage.SignatureBase64}");
+            return signedMessage;
         }
 
         private static void DecryptMessage(string encryptedTextBase64)

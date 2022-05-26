@@ -1,4 +1,5 @@
-﻿using RestEase;
+﻿using Asymmetric.Implementation;
+using RestEase;
 using System.Threading.Tasks;
 
 namespace Symmetric.Client
@@ -7,5 +8,8 @@ namespace Symmetric.Client
     {
         [Get("api/get/encrypted-message")]
         Task<string> GetMessageEncryptedWithPublicKeyAsync();
+
+        [Get("api/get/signed-message")]
+        Task<SignedMessage> GetSignedMessageAsync();
     }
 }
